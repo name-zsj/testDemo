@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/snow.js"></script>
+</head>
+<body>
+    <canvas id="mycanvas">
+        对不起，您需要升级浏览器
+    </canvas>
+    <script type="text/javascript">
+        // 获取画布
+        let mycanvas = document.getElementById('mycanvas');
+        let ctx = mycanvas.getContext('2d');
+
+        // 设置画布
+        let W = window.innerWidth;
+        let H = window.innerHeight;
+        mycanvas.width = W;
+        mycanvas.height = H;
+
+        // 构建数据
+        const num = 200;
+        let arr = [];
+        buildData();
+
+
+        setInterval(draw, 20);
+    </script>
+</body>
+</html>

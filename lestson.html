@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas01</title>
+    <style>
+        body {
+           background: teal;
+        }
+        canvas {
+            background: pink;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="600px" height="400px" id="mycanvas">
+        ç
+    </canvas>
+    <script type="text/javascript">
+        let mycanvas = document.getElementById("mycanvas");
+        function draw() {
+            mycanvas.width = window.innerWidth;
+            mycanvas.height = window.innerHeight;
+            if (mycanvas.getContext("2d")) {
+                let ctx = mycanvas.getContext("2d");
+                //填充颜色
+                ctx.fillStyle = "red";
+                //填充方法
+                ctx.fillRect(10,10,300,300);
+
+                ctx.fillStyle = "blue";
+                ctx.fillRect(20,20,300,300);
+
+                //描边颜色
+                ctx.strokeStyle = "green";
+                //描边方法
+                ctx.strokeRect(30,30,300,300);
+
+                //清除方法
+                ctx.clearRect(100,100,200,200);
+
+
+            } else {
+                alert("您的浏览器不支持该方法！")
+            }
+        }
+
+        draw()
+        window.addEventListener('resize', draw)
+    </script>
+</body>
+</html>
