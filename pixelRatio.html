@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制高清图</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 10px auto 0;
+            border: 1px solid orange;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="600" height="500">
+    您的浏览器不支持canvas
+</canvas>
+<script type="text/javascript">
+    const mycanvas = document.getElementById("mycanvas");
+    const ctx =mycanvas.getContext("2d");
+
+    // 获取像素分辨率
+    const getPixelRatio = (context) => {
+        return context.devicePixelRatio || 1
+    }
+
+    /*
+    * 01 放大 canvas
+    * 02 再在 css 里将宽高设置为原来的大小
+    * 03考虑内容的缩放，因此也需将 ctx 缩放
+    **/
+
+    const ratio = getPixelRatio(window);
+    const oldWidth = mycanvas.width;
+    const oldHeigt = mycanvas.height;
+
+    mycanvas.width = mycanvas.width * ratio;
+    mycanvas.height = mycanvas.height * ratio;
+
+    mycanvas.style.width = oldWidth + 'px';
+    mycanvas.style.height = oldHeigt + 'px';
+
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "orange";
+    ctx.moveTo(100, 100);
+    ctx.lineTo(300, 300);
+    ctx.lineTo(500, 200);
+    ctx.stroke();
+    ctx.closePath();
+
+</script>
+
+</body>
+</html>

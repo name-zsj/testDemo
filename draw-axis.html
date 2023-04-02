@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制坐标轴</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 10px auto 0;
+            border: 1px solid orange;
+        }
+    </style>
+</head>
+<body>
+<canvas id="mycanvas" width="600" height="500">
+    您的浏览器不支持canvas
+</canvas>
+<script type="text/javascript">
+    const mycanvas = document.getElementById("mycanvas");
+    const ctx =mycanvas.getContext("2d");
+
+    // 获取像素分辨率
+    const getPixelRatio = (context) => {
+        return context.devicePixelRatio || 1
+    }
+
+    /*
+    * 01 放大 canvas
+    * 02 再在 css 里将宽高设置为原来的大小
+    * 03 考虑内容的缩放，因此也需将 ctx 缩放
+    **/
+
+    const ratio = getPixelRatio(window);
+    const oldWidth = mycanvas.width;
+    const oldHeigt = mycanvas.height;
+
+    mycanvas.width = mycanvas.width * ratio;
+    mycanvas.height = mycanvas.height * ratio;
+
+    mycanvas.style.width = oldWidth + 'px';
+    mycanvas.style.height = oldHeigt + 'px';
+
+    // 提前设置相关属性
+    const ht = mycanvas.clientHeight;
+    const wd = mycanvas.clientWidth;
+    const pad = 20;
+    const bottomPad = 20;
+    const step_x = 60;
+    const step_y = 100;
+
+    // 绘制坐标轴箭头
+    const draw_arrow = (options) => {
+        const { lineWidth, strokeStyle, moveToX, moveToY, lineToX, lineToY, ctx } = options;
+        ctx.beginPath();
+        ctx.lineWidth = lineWidth || 1;
+        ctx.strokeStyle = strokeStyle || "linghtblue";
+        ctx.moveTo(moveToX || 0, moveToY || 0);
+        ctx.lineTo(lineToX || 0, lineToY || 0);
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    // 绘制坐标轴和刻度
+    const drawAxis = (options) => {
+        const { wd, ht, pad, bottomPad, step_x, step_y, ctx } = options;
+
+        // 绘制坐标轴
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "linghtblue";
+        ctx.moveTo(pad, pad);
+        ctx.lineTo(pad, ht * ratio - bottomPad);
+        ctx.lineTo(wd * ratio - pad, ht * ratio - bottomPad);
+        ctx.stroke();
+        ctx.closePath();
+
+        // 绘制轴标轴箭头 - x-up, x-down, y-left, y-right
+        draw_arrow({
+            moveToX: wd * ratio - pad,
+            moveToY: ht * ratio - bottomPad,
+            lineToX: wd * ratio - pad - 10,
+            lineToY: ht * ratio - bottomPad + 10,
+            ctx
+        })
+        draw_arrow({
+            moveToX: wd * ratio - pad,
+            moveToY: ht * ratio - bottomPad,
+            lineToX: wd * ratio - pad - 10,
+            lineToY: ht * ratio - bottomPad - 10,
+            ctx
+        })
+        draw_arrow({
+            moveToX: pad,
+            moveToY: pad,
+            lineToX: pad - 10,
+            lineToY: pad + 10,
+            ctx
+        })
+        draw_arrow({
+            moveToX: pad,
+            moveToY: pad,
+            lineToX: pad + 10,
+            lineToY: pad + 10,
+            ctx
+        })
+
+        // 绘制 x 刻度
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#666";
+        for (let i = 1; i < Math.floor(wd * ratio / step_x); i++) {
+            ctx.moveTo(pad + i * step_x, ht * ratio - bottomPad)
+            ctx.lineTo(pad + i * step_x, ht * ratio - bottomPad - 10)
+        }
+        ctx.stroke();
+        ctx.closePath();
+
+        // 绘制 y 刻度
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#666";
+        for (let i = 1; i < Math.floor(ht * ratio / step_y); i++) {
+            ctx.moveTo(pad, (ht * ratio - bottomPad) - (i * step_y))
+            ctx.lineTo(pad + 10, (ht * ratio - bottomPad) - (i * step_y))
+        }
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    drawAxis({ wd, ht, pad, bottomPad, step_x, step_y, ctx })
+
+</script>
+
+</body>
+</html>
